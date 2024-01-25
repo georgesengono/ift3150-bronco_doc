@@ -1,7 +1,7 @@
-## Revolutionizing Version Control: An AI-Powered Approach to Simplifying Git
+# Revolutionizing Version Control: An AI-Powered Approach to Simplifying Git
 
-**Author**: Georges Arthur Engono | georges.arthur.engono.essame@umontreal.ca
-**Supervisor**: Eugène Syriani | 
+**Author**: Georges Arthur Engono | [georges.arthur.engono.essame@umontreal.ca](mailto:georges.arthur.engono.essame@umontreal.ca)
+**Supervisor**: Eugène Syriani |  [syriani(@)iro.umontreal.ca](mailto:syriani(@)iro.umontreal.ca)
 
 ---
 
@@ -26,14 +26,54 @@ These challenges can hinder productivity, increase frustration, and elevate the 
 To revolutionize the way developers interact with Git, we propose the development of an AI-powered chatbot, integrated within the Command Line Interface (CLI). This solution is designed to simplify Git commands and workflows, making them more accessible and efficient. The chatbot will offer the following features:
 
 - **Natural Language Interaction**: Users can communicate with Git through natural language queries and instructions. Instead of typing traditional Git commands, users can ask questions like, "How do I commit my changes?" or state commands such as, "Update my branch with the latest changes from the main branch."
+
 - **Project Structure Awareness**: The chatbot will have a deep understanding of the current project's structure. It will be aware of critical details like previous commits, the number of branches, active contributors, and recent changes. This knowledge allows the chatbot to provide contextually relevant advice and actions, tailored to the specific state and needs of the project.
+
 - **Personalized Assistance and Error Prevention**: By understanding the project's context and user's intent, the chatbot can offer personalized guidance. It can suggest the most appropriate Git actions, help avoid common mistakes, and alert users to potential conflicts or issues based on the project's history and current status.
+
 - **Facilitating Complex Operations**: The chatbot can assist with more complex Git operations that typically require multiple steps and a deep understanding of Git's intricacies. For example, it can guide users through resolving merge conflicts, rebasing branches, or managing pull requests.
+
 - **Seamless CLI Integration**: This chatbot will be a part of the CLI environment, ensuring that developers can access its capabilities without leaving their terminal or interrupting their workflow. This integration provides a smooth, cohesive experience, blending the power of AI with the familiarity of the CLI.
+
+  
+
+### High-Level Architecture
+
+
+
+![](/Users/garthur007/Desktop/Université/Session VI/IFT 3150/bronco_doc/media/High Level Architecture.png)
+
+
+
+This diagram illustrates a high-level architecture for the AI-powered system designed to process Git commands using an LLM (OpenAI) model. Here's a summary of the workflow:
+
+1. **Git Commands**: This is the input to the system, where Git commands are issued by the user.
+
+2. **Text Splitter**: The input Git commands are split into smaller chunks of text. This step is necessary for parsing and make the input more manageable for processing.
+
+3. **Embedding API**: The chunks from the text splitter are passed to an embedding API, which converts the text into numerical vector representations (embeddings). These embeddings capture the semantic meaning of the chunks in a format suitable for machine processing.
+
+4. **Vector Database**: The embeddings are stored or matched against a vector database, such as Pinecone. This database can be used for searching and retrieving relevant documents based on similarity in the vector space.
+
+5. **Query**: This represents the user's query or command that needs to be processed entered from the user's CLI.
+
+6. **Git Project Data**: This includes structured data about the Git project in a JSON format containing metadata, branch information, commit history, etc.
+
+7. **Git Model Generator**: This component uses the Git API to generate or update the Git project data. It interacts with the Git repository and the local project to fetch the latest data.
+
+8. **Git API**: This is the interface through which the Git Model Generator communicates with the Git repositories, allowing it to execute Git operations and retrieve data.
+
+9. **OpenAI Model**: This is the AI model (like GPT-4) which processes the user's query, the Git project data, and the context (possibly including the relevant documents retrieved from the vector database). It generates an answer or output based on this information.
+
+10. **Answer**: This is the final output from the OpenAI model, which is the system's response to the user's query. It could be a direct answer, a Git command execution result, or further guidance on Git operations.
+
+This architecture uses natural language processing and semantic search with a vector database to interpret Git commands, fetch relevant project data, and provide intelligent responses and actions based on the context of the Git project.
+
+
 
 ### Git Project Model
 
-Creating a model for representing Git projects offers a multitude of advantages, particularly in enhancing the bot's understanding of the project's intricate details and current status. This structured approach allows for more accurate, context-aware responses, tailored to the unique characteristics and needs of each project. It significantly improves the bot's ability to handle complex queries, offer predictive suggestions, and prevent potential errors by understanding the project's dynamics.
+Creating a model for representing Git projects enhances the bot's understanding of the project's intricate details and current status. This structured approach allows for more accurate, context-aware responses, tailored to the unique characteristics and needs of each project. It significantly improves the bot's ability to handle complex queries, offer predictive suggestions, and prevent potential errors by understanding the project's dynamics.
 
 **Project Metadata**
 
@@ -176,17 +216,7 @@ Example
 
 
 
-### High-Level Architecture
-
-
-
-![](/Users/garthur007/Downloads/firefox-downloads/dummy.png)
-
-
-
-Sed ut perspiciatis unde omnis iste natus error sit voluptatem  accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt  explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut  odit aut fugit, sed quia consequuntur magni dolores eos qui ratione  voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum  quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam  eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat  voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam  corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur? Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse  quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo  voluptas nulla pariatur?
-
-#### Components
+### Components
 
 ##### Frontend - CLI
 
@@ -218,7 +248,7 @@ Sed ut perspiciatis unde omnis iste natus error sit voluptatem  accusantium dolo
 
 ### Roadmap
 
-![](/Users/garthur007/Desktop/screenshots/Screenshot 2024-01-17 at 11.23.16 AM.png)
+![](/Users/garthur007/Desktop/Université/Session VI/IFT 3150/bronco_doc/media/Roadmap.png)
 
 
 
@@ -231,3 +261,7 @@ Drafted the initial design document and the template for my final report.
 #### Week 2
 
 Continued drafting the design document and researching different components of the project. I set up a website for this class where I will be posting my weekly updates.
+
+#### Week 3
+
+...
