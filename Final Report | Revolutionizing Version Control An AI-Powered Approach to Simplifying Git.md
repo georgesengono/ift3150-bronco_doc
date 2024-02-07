@@ -254,14 +254,28 @@ Example
 
 ### Weekly Update
 
-#### Week 1 
+#### Week 1 & 2
 
 Drafted the initial design document and the template for my final report.
 
-#### Week 2
+Wrote the design document and researched different components of the project. I set up a website for this class where I will be posting my weekly updates.
 
-Continued drafting the design document and researching different components of the project. I set up a website for this class where I will be posting my weekly updates.
+#### Week 3 & 4
 
-#### Week 3
+I created the NPM package which will contain the source code of this project.
 
-...
+- #### [This is where it all begins...](https://github.com/georgesengono/git-ai/commit/415cddccf0ae3634e8c6981ec5422a582bcfca42)
+
+I created the text splitter that will be used to split the large pdf file that will serve as a knowledge base for the LLM AI.
+
+- #### [Add function to get token count of text](https://github.com/georgesengono/git-ai/commit/88b78beb838388af81eef8b2eacaf30c879d4f6c)
+
+- #### [Add sentence splitter](https://github.com/georgesengono/git-ai/commit/af2f77747286229e8b108c95248fb71846b7c5f0)
+
+- #### [Add function to group sentences with overlap](https://github.com/georgesengono/git-ai/commit/c569bffe1591fb1f6e0489e99a750f8885617b07)
+
+- #### [Add text splitter function](https://github.com/georgesengono/git-ai/commit/70f8fa13405f0e00365551fa453b82baf838127a)
+
+I created the OpenAI wrapper class which will be used to interact with the OpenAI api and I implemented the GenerateEmbedding function to generate the embeddings of a given input text.
+
+- #### [Add embedding generator](https://github.com/georgesengono/git-ai/commit/929bb1dab494028355405e3c9f598d026c49f046)
