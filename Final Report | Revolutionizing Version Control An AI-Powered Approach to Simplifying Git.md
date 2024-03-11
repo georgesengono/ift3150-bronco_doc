@@ -41,7 +41,7 @@ To revolutionize the way developers interact with Git, we propose the developmen
 
 
 
-![](/Users/garthur007/Desktop/Université/Session VI/IFT 3150/bronco_doc/media/High Level Architecture.png)
+![](media/High Level Architecture.png)
 
 
 
@@ -248,7 +248,7 @@ Example
 
 ### Roadmap
 
-![](/Users/garthur007/Desktop/Université/Session VI/IFT 3150/bronco_doc/media/Roadmap.png)
+![](media/Roadmap.png)
 
 
 
@@ -279,3 +279,20 @@ I created the text splitter that will be used to split the large pdf file that w
 I created the OpenAI wrapper class which will be used to interact with the OpenAI api and I implemented the GenerateEmbedding function to generate the embeddings of a given input text.
 
 - #### [Add embedding generator](https://github.com/georgesengono/git-ai/commit/929bb1dab494028355405e3c9f598d026c49f046)
+
+
+
+#### Week 5 - 8
+
+These weeks have been more busy than I expected due to the workload from my four other classes. With that being said, I was able to stay on track with my schedule and create the vector database and populate it with git commands comming from the following book that I found online : https://goalkicker.com/GitBook/GitNotesForProfessionals.pdf
+
+I decided to go with the ChromaDB due to the fact that it is an open-source vector database for AI, notable for its scalability, ease of use and in-memory capabilities.
+
+I'm using a Docker container to run the ChromaDB.
+
+- #### [Add git commands data files](https://github.com/georgesengono/git-ai/commit/b924504e1f40903aac606e852f26622891ecf1fd)
+
+- #### [Add script to setup vector db and chroma-client](https://github.com/georgesengono/git-ai/commit/7427448896e9f6832e128c31dc5991cbcb0374af)
+
+In the following weeks, I will be working on the Git API wrapper to get in real time contextual data about a client's project/
+
