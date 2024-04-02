@@ -296,3 +296,18 @@ I'm using a Docker container to run the ChromaDB.
 
 In the following weeks, I will be working on the Git API wrapper to get in real time contextual data about a client's project/
 
+
+
+#### Week 8 - 11
+
+Progress on my AI-GIT project is in line with the initial plan. I've implemented a child process to run a bash script that executes the necessary Git commands to collect current project data, including branches, commits, and recent changes. The upcoming week will be dedicated to integrating the Language Model (LLM) with the chatbot. I plan to augment the bash script with additional Git commands and utilize the GitHub API to give the LLM a more comprehensive overview of the project. 
+
+Bash script to get project status : https://github.com/georgesengono/git-ai/blob/main/src/common/git-script.sh
+
+- #### [Add GitClient part. 1](https://github.com/georgesengono/git-ai/commit/65928e80378697b92e6765d6e1e0630eb3d12ddd)
+
+- #### [Add git child process to save project status](https://github.com/georgesengono/git-ai/commit/5925a5333e5b818d9b3d7ba98bc018b392a1383f)
+
+
+
+I'm considering using LLama2 and OpenAI's GPTs.  The LLM should be able to take the project status and relevant documentation from the semantic search (that I worked on from weeks 5-8) and generate a context-aware answer to help the user.
