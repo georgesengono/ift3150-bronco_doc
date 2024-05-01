@@ -7,7 +7,7 @@
 
 ### Introduction
 
-In the world of software development, version control systems are indispensable for managing changes to source code over time. Git, created by Linus Torvalds in 2005, has emerged as the predominant version control system, lauded for its flexibility and distributed nature. However, its widespread adoption has not been without challenges. The steep learning curve, complex command syntax, and inefficient workflows have been significant barriers for many developers, particularly those new to version control or those working in fast-paced, collaborative environments.
+In the world of software development, version control systems are indispensable for managing changes to source code over time. Git, created by Linus Torvalds in 2005, has emerged as the predominant version control system, lauded for its flexibility and distributed nature. However, its widespread adoption has not been without challenges. The steep learning curve, complex command syntax, and inefficient workflows have been significant barriers for many evelopers, particularly those new to version control or those working in fast-paced, collaborative environments.
 
 ### Problem Statement 
 
@@ -45,27 +45,16 @@ To revolutionize the way developers interact with Git, we propose the developmen
 
 
 
-This diagram illustrates a high-level architecture for the AI-powered system designed to process Git commands using an LLM (OpenAI) model. Here's a summary of the workflow:
+This diagram illustrates a high-level architecture for the AI-powered system designed to process Git commands using an LLM (llama3) model. Here's a summary of the workflow:
 
-1. **Git Commands**: This is the input to the system, where Git commands are issued by the user.
-
+1. **Git Notes For Professional**: This contains the source of truth for git related questions. [Git Notes For Professional](https://goalkicker.com/GitBook/GitNotesForProfessionals.pdf) is a 200 pages open source book that answers questions about git.
 2. **Text Splitter**: The input Git commands are split into smaller chunks of text. This step is necessary for parsing and make the input more manageable for processing.
-
-3. **Embedding API**: The chunks from the text splitter are passed to an embedding API, which converts the text into numerical vector representations (embeddings). These embeddings capture the semantic meaning of the chunks in a format suitable for machine processing.
-
-4. **Vector Database**: The embeddings are stored or matched against a vector database, such as Pinecone. This database can be used for searching and retrieving relevant documents based on similarity in the vector space.
-
+3. **Embedding API**: The chunks from the text splitter are passed to an embedding API, which converts the text into numerical vector representations (embeddings). These embeddings capture the semantic meaning of the chunks in a format suitable for machine processing. I'm using currently using OpenAI's emmbeding function for this project. To read more about what vector embeddings are, see [here](https://www.elastic.co/what-is/vector-embedding).
+4. **Vector Database**: The embeddings are stored or matched against a vector database, such as Chroma. This database can be used for searching and retrieving relevant documents based on similarity in the vector space.
 5. **Query**: This represents the user's query or command that needs to be processed entered from the user's CLI.
-
-6. **Git Project Data**: This includes structured data about the Git project in a JSON format containing metadata, branch information, commit history, etc.
-
-7. **Git Model Generator**: This component uses the Git API to generate or update the Git project data. It interacts with the Git repository and the local project to fetch the latest data.
-
-8. **Git API**: This is the interface through which the Git Model Generator communicates with the Git repositories, allowing it to execute Git operations and retrieve data.
-
-9. **OpenAI Model**: This is the AI model (like GPT-4) which processes the user's query, the Git project data, and the context (possibly including the relevant documents retrieved from the vector database). It generates an answer or output based on this information.
-
-10. **Answer**: This is the final output from the OpenAI model, which is the system's response to the user's query. It could be a direct answer, a Git command execution result, or further guidance on Git operations.
+6. **Git Project Data**: This includes structured data about the Git project in a JSON format containing metadata, branch information, commit history, etc.  This information is taken by running a git script (with commands such as `git status` and `git branch`) in a child process.
+7. **LLama3 Model**: This is the AI model (like GPT-4) which processes the user's query, the Git project data, and the context (possibly including the relevant documents retrieved from the vector database). It generates an answer or output based on this information.
+8. **Answer**: This is the final output from the Llama3 model, which is the system's response to the user's query. It could be a direct answer, a Git command execution result, or further guidance on Git operations.
 
 This architecture uses natural language processing and semantic search with a vector database to interpret Git commands, fetch relevant project data, and provide intelligent responses and actions based on the context of the Git project.
 
@@ -143,76 +132,38 @@ Creating a model for representing Git projects enhances the bot's understanding 
 - configurations: Dictionary
   - Key-value pairs for various Git settings (e.g., `merge.conflictstyle`, `core.autocrlf`).
 
-Example
 
-```json
-{
-  "project_metadata": {
-    "project_name": "ExampleProject",
-    "repository_url": "https://example.com/repo.git",
-    "creation_date": "2024-01-01T12:00:00Z",
-    "last_updated": "2024-01-15T08:00:00Z",
-    "primary_language": "Python",
-    "description": "This is an example project."
-  },
-  "branches": [
-    {
-      "name": "main",
-      "last_commit": "a1b2c3d4",
-      "created_date": "2024-01-01T12:00:00Z",
-      "last_updated": "2024-01-15T08:00:00Z",
-      "is_default": true
-    }
-  ],
-  "commits": [
-    {
-      "hash": "a1b2c3d4",
-      "author": "johndoe",
-      "date": "2024-01-15T08:00:00Z",
-      "message": "Initial commit",
-      "branch_name": "main"
-    }
-  ],
-  "files": [
-    {
-      "file_name": "README.md",
-      "status": "Modified",
-      "last_modified": "2024-01-15T08:00:00Z"
-    }
-  ],
-  "issues": [
-    {
-      "id": 1,
-      "title": "Fix README formatting",
-      "status": "Open",
-      "created_date": "2024-01-15T08:00:00Z",
-      "closed_date": null
-    }
-  ],
-  "pull_requests": [
-    {
-      "id": 1,
-      "title": "Add new feature",
-      "status": "Open",
-      "created_date": "2024-01-15T08:00:00Z",
-      "closed_date": null,
-      "branch_source": "feature/new-feature",
-      "branch_target": "main"
-    }
-  ],
-  "collaborators": [
-    {
-      "username": "johndoe",
-      "role": "Owner"
-    }
-  ],
-  "configurations": {
-    "merge.conflictstyle": "diff3",
-    "core.autocrlf": "true"
-  }
-}
+
+Here's the git script to get some information about the project : 
+
+```bash
+#!/bin/bash
+
+# Get branch information
+echo "Branches and their last commit:"
+for branch in $(git branch --list | sed 's/* //'); do
+    echo "Branch: $branch"
+    echo "Last Commit: $(git log $branch -1 --pretty=format:'%H')"
+    echo "Last Commit Date: $(git log $branch -1 --pretty=format:'%aI')"
+    echo "Last Commit Author: $(git log $branch -1 --pretty=format:'%aN')"
+    echo "Last Commit Message: $(git log $branch -1 --pretty=format:'%s')"
+done
+
+echo ""
+echo "Commit History for each branch:"
+for branch in $(git branch --list | sed 's/* //'); do
+    echo "Commit History for $branch:"
+    git log $branch --pretty=format:'{"commit": "%H", "author": "%aN", "date": "%aI", "message": "%s"},' | awk '{print}' ORS=' '
+    echo ""
+done
+
+echo ""
+echo "Current Git Status:"
+git status 
 
 ```
+
+The GitHub or GitLab APIs will be required for the missing informations.
 
 
 
@@ -220,31 +171,25 @@ Example
 
 ##### Frontend - CLI
 
-...
+This component is the primary user interface for the AI-powered system designed to process Git commands. It is built using `@inquirer/prompts` (npm link [here](https://www.npmjs.com/package/@inquirer/prompts)), a Node.js library known for facilitating the creation of interactive command line user interfaces. This component is essential for capturing user inputs through a series of intuitive prompts, making the interaction with the system both straightforward and efficient.
 
 ##### Git commands - Vector Database
 
-...
+The Vector Database component of the system utilizes [Chroma](https://www.trychroma.com), an AI-native, open-source embedding database optimized for handling and storing embedding vectors. Chroma supports efficient similarity searches in high-dimensional vector spaces, making it ideal for applications requiring rapid and accurate retrieval of information based on semantic similarity. This component is crucial for matching the embedding vectors derived from user inputs and Git command data to relevant stored documents, enabling intelligent query processing and response generation. 
 
-##### Git API - Git Model
-
-...
-
-##### Text Splitter
-
-...
+It is deployed locally using Docker, ensuring easy setup and scalability while maintaining control over data privacy and security.
 
 ##### Embedding Generator
 
-...
+ The Embedding API component leverages [OpenAI's text-embedding function](https://platform.openai.com/docs/guides/embeddings), specifically the `text-embedding-ada-002` model, to convert text inputs into numerical vector representations known as embeddings. This function captures the semantic meaning of the text, transforming it into a format that can be efficiently processed by machine learning algorithms. These embeddings are crucial for enabling the AI-powered system to understand and analyze the context and content of Git commands and related queries. The use of this advanced embedding technology ensures high accuracy and relevance in the system's responses and operations.
 
-##### Context Generator
+##### Llama3
 
-...
+[Llama 3](https://llama.meta.com/llama3/) is an AI language model developed by Meta that can understand and generate language. It comes in two sizes, with the larger (70B) version offering more power, and is compatible with Meta's chat assistants across Facebook, Instagram and WhatsApp. Llama 3 is available for free, encouraging development and research across various fields. It is the successor to Llama 1 and 2, with improvements in logic, understanding and factual accuracy. For this project, the Llama 3 7B was used. 
 
-##### OpenAI Chatbot
+##### Ollama
 
-...
+The LLama 3 Model component utilizes [Ollama](https://ollama.com/), a lightweight and extensible framework designed for local execution of large language models (LLMs). Ollama enables developers to harness the powerful capabilities of models such as LLama 3, Mistral and other LLMs directly on their own machines. This framework is integral to the AI-powered system, facilitating real-time processing of Git commands and queries by interpreting user input, Git project data, and relevant documents. Ollama's adaptability ensures that developers can easily update and maintain the model, improving response accuracy and system performance over time without the need for constant internet connectivity or external computing resources.  
 
 ### Roadmap
 
@@ -311,3 +256,32 @@ Bash script to get project status : https://github.com/georgesengono/git-ai/blob
 
 
 I'm considering using LLama2 and OpenAI's GPTs.  The LLM should be able to take the project status and relevant documentation from the semantic search (that I worked on from weeks 5-8) and generate a context-aware answer to help the user.
+
+#### Week 11 - 
+
+I have implemented the LLM using Ollama. For this project I'm using llama 3 as the LLM model.
+
+
+
+### Future Updates
+
+#### 1- Moving the LLM model to an EC2 instance and make it available trough an API.
+
+In future updates for the git-ai project, we plan to enhance performance and scalability by migrating the llama3 LLM model to an [EC2](https://aws.amazon.com/ec2/) instance in the Amazon Web Services cloud. This transition will ensure that the computational demands of the LLM are managed independently of the user’s local machine. By leveraging the cloud's robust infrastructure, we aim to provide a more reliable and efficient service, allowing users to experience consistent performance regardless of their own hardware capabilities. This update is expected to not only improve response times but also enable more complex processing tasks without burdening the user's system.
+
+#### 2- Use the GitHub and GitLab APIs to get more information about the project
+
+In an upcoming development phase of the git-ai project, we plan to introduce a comprehensive web interface designed to further enhance user interaction and functionality. This interface will allow users to seamlessly connect their GitHub and GitLab accounts directly with the git-ai system. By integrating with these version control platforms, the chatbot will be able to access a wider range of project-specific data, enabling it to deliver more context-aware responses. This capability will not only streamline the user experience but also enrich the chatbot's understanding of the user's projects, thereby facilitating more precise and insightful assistance with their version control needs.
+
+#### 3- Add memory to chat and provide the user the ability to add custom rules
+
+In the next phase of enhancements for the git-ai project, we plan to significantly expand the chatbot's capabilities by integrating a memory feature. This upgrade will enable the chatbot to recall previous conversations, thereby providing continuity and context in ongoing interactions with users. Additionally, we will introduce functionality that allows users to implement custom rules within the chatbot. These rules could be tailored to specific company policies or project guidelines, enhancing the chatbot's utility and adaptability. For instance, a user could set up a rule for the chatbot to alert them whenever a 'git pull' is necessary, ensuring they remain updated with the latest changes in their repository. This level of customization will not only make the chatbot more responsive to individual project needs but also more proactive in managing routine tasks.
+
+### Demo
+
+[Link to demo ](https://udemontreal-my.sharepoint.com/:v:/g/personal/georges_arthur_engono_essame_umontreal_ca/EVsyPIvKmH5EvEC5ruEg7TMBv6t6p6WDcdjIG-czVBoHOA?nav=eyJyZWZlcnJhbEluZm8iOnsicmVmZXJyYWxBcHAiOiJPbmVEcml2ZUZvckJ1c2luZXNzIiwicmVmZXJyYWxBcHBQbGF0Zm9ybSI6IldlYiIsInJlZmVycmFsTW9kZSI6InZpZXciLCJyZWZlcnJhbFZpZXciOiJNeUZpbGVzTGlua0NvcHkifX0&e=1nfhk1) (the demo was done in French)
+
+### GitHub Repository
+
+[Link to repo](https://github.com/georgesengono/git-ai).
+
